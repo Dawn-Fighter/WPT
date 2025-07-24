@@ -1,3 +1,15 @@
+<div align="center">
+
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
+
+<img src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif" alt="security gif" width="400">
+
+</div>
+
+---
+
+
 # Web Penetration Testing Tool (WPT) v1.0
 
 ## Overview
@@ -82,6 +94,13 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 ## Contact
 For any issues, suggestions, or questions, open an issue in the repository or contact us via GitHub.
 
----
-🚀 Happy Hacking!
+<div align="center">
 
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
+
+<img src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif" alt="security gif" width="400">
+
+</div>
+
+---
