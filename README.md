@@ -3,8 +3,6 @@
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
 
-<img src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif" alt="security gif" width="400">
-
 </div>
 
 ---
@@ -99,7 +97,7 @@ For any issues, suggestions, or questions, open an issue in the repository or co
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
 
-<img src="https://media.giphy.com/media/3ohzdIuqJoo8QdKlnW/giphy.gif" alt="security gif" width="400">
+
 
 </div>
 
