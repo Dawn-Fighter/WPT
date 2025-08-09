@@ -31,7 +31,7 @@ python3 --version
 
 ### Clone the Repository
 ```bash
-git clone https://github.com/your-username/WPT-Scanner.git
+git clone https://github.com/Dawn-Fighter/WPT-Scanner.git
 cd WPT-Scanner
 ```
 
