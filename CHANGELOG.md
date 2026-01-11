@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.1.0] - 2026-01-12
+
+### Added
+- **Security Headers Scanner**: New module to check HTTP security headers (HSTS, CSP, X-Frame-Options, etc.)
+- Header configuration validation and remediation recommendations
+- Information disclosure header detection (Server, X-Powered-By, etc.)
+- Enhanced security posture analysis with 8 scanner modules
+
+### Changed
+- Increased total scanner modules from 7 to 8
+- Improved security findings categorization
+- Better severity classification for security headers
+- Enhanced overall scan coverage
+
 ## [2.0.0] - 2026-01-12
 
 ### Added

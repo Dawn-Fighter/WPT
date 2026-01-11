@@ -14,6 +14,7 @@ from wpt.modules.api_scanner import APIScanner
 from wpt.modules.js_analyzer import JSAnalyzer
 from wpt.modules.cookie_analyzer import CookieAnalyzer
 from wpt.modules.form_analyzer import FormAnalyzer
+from wpt.modules.security_headers_scanner import SecurityHeadersScanner
 from wpt.core.reporter import Reporter
 from wpt.utils.logger import setup_logger
 from wpt.utils.constants import DEFAULT_TIMEOUT, DEFAULT_THREADS, DEFAULT_USER_AGENT
@@ -90,6 +91,16 @@ class WebScanner:
             (
                 "SSL/TLS Analysis",
                 SSLScanner(
+                    self.target_url,
+                    self.domain,
+                    self.session,
+                    timeout=self.timeout,
+                    verbose=self.verbose,
+                ),
+            ),
+            (
+                "Security Headers Check",
+                SecurityHeadersScanner(
                     self.target_url,
                     self.domain,
                     self.session,

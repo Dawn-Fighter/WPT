@@ -16,7 +16,8 @@
 ## Features
 - 🔍 **DNS Enumeration & Subdomain Discovery**
 - 🔐 **SSL/TLS Configuration Analysis**
-- 🛡️ **Web Application Firewall (WAF) Detection**
+- 🛡️ **Security Headers Checker** (NEW in v2.1!)
+- 🔒 **Web Application Firewall (WAF) Detection**
 - 📡 **API Endpoint Discovery**
 - 📜 **JavaScript Security Analysis**
 - 🍪 **Cookie Security Analysis**
@@ -195,10 +196,16 @@ wpt example.com -o report.csv -f csv
 - Identifies DNS configuration issues
 
 ### SSL/TLS Analysis
-- Verifies HTTPS usage
-- Checks certificate expiration
-- Validates TLS version (recommends TLSv1.3)
+- Checks if HTTPS is enabled
+- Analyzes SSL certificate validity and expiration
+- Checks supported TLS versions
 - Detects weak cipher suites
+
+### Security Headers Analysis (NEW!)
+- Checks for missing security headers (HSTS, CSP, X-Frame-Options, etc.)
+- Validates header configurations
+- Identifies information disclosure headers
+- Provides specific remediation recommendations
 
 ### WAF Detection
 - Identifies common WAF solutions
@@ -302,8 +309,9 @@ We welcome contributions! Follow these steps:
 ## Roadmap
 
 Future enhancements planned:
+- [ ] XSS vulnerability scanner
+- [ ] SQL injection detection
 - [ ] CORS policy analysis
-- [ ] Security headers checker (CSP, X-Frame-Options, etc.)
 - [ ] robots.txt and sitemap.xml analysis
 - [ ] Directory bruteforcing capability
 - [ ] Technology fingerprinting
@@ -317,7 +325,14 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Changelog
 
-### v2.0.0 (Current)
+### v2.1.0 (Current)
+- Added Security Headers Scanner module
+- Enhanced subdomain enumeration
+- Improved error handling and logging
+- Updated to 8 scanner modules total
+- Better severity classification
+
+### v2.0.0
 - Complete rewrite with modular architecture
 - Fixed critical bugs (Selenium leaks, cookie checking, timeouts)
 - Added severity levels to findings
