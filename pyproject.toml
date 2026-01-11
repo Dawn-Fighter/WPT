@@ -1,0 +1,73 @@
+[build-system]
+requires = ["setuptools>=45", "wheel", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wpt-scanner"
+version = "2.0.0"
+description = "Web Penetration Testing Tool - Comprehensive security scanner for web applications"
+readme = "README.md"
+requires-python = ">=3.7"
+license = {text = "MIT"}
+authors = [
+    {name = "Chethas Dileep"}
+]
+keywords = ["security", "penetration testing", "web security", "vulnerability scanner", "security audit"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Information Technology",
+    "Topic :: Security",
+    "Topic :: Software Development :: Testing",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+dependencies = [
+    "requests>=2.25.0",
+    "beautifulsoup4>=4.9.0",
+    "dnspython>=2.0.0",
+    "tqdm>=4.50.0",
+    "selenium>=4.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=6.0",
+    "pytest-cov>=2.10",
+    "black>=21.0",
+    "flake8>=3.8",
+    "mypy>=0.900",
+]
+
+[project.urls]
+Homepage = "https://github.com/Dawn-Fighter/WPT"
+"Bug Reports" = "https://github.com/Dawn-Fighter/WPT/issues"
+"Source" = "https://github.com/Dawn-Fighter/WPT"
+
+[project.scripts]
+wpt = "wpt.cli:main"
+
+[tool.setuptools]
+packages = ["wpt", "wpt.core", "wpt.modules", "wpt.utils"]
+
+[tool.black]
+line-length = 100
+target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
+
+[tool.mypy]
+python_version = "3.7"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+python_classes = "Test*"
+python_functions = "test_*"

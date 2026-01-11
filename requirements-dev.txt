@@ -1,0 +1,21 @@
+# Development dependencies for WPT
+# Install with: pip install -r requirements-dev.txt
+
+# Testing
+pytest>=6.0.0
+pytest-cov>=2.10.0
+pytest-mock>=3.0.0
+
+# Code quality
+black>=21.0
+flake8>=3.8.0
+mypy>=0.900
+pylint>=2.6.0
+
+# Type stubs
+types-requests>=2.25.0
+types-beautifulsoup4>=4.9.0
+
+# Development tools
+ipython>=7.0.0
+ipdb>=0.13.0
