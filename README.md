@@ -1,373 +1,207 @@
-<div align="center">
+# WPT — Web Penetration Toolkit
 
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
+![Python](https://img.shields.io/badge/Python-3.7+-3776AB?style=flat-square&logo=python&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
+![Version](https://img.shields.io/badge/Version-2.1.0-orange?style=flat-square)
+![Platform](https://img.shields.io/badge/Platform-Linux%20%7C%20macOS%20%7C%20Windows-lightgrey?style=flat-square)
+![Status](https://img.shields.io/badge/Status-Active-brightgreen?style=flat-square)
 
-</div>
+A modular, CLI-first web application security scanner built for penetration testers and bug bounty hunters. WPT automates the reconnaissance and vulnerability discovery phase of a web assessment — covering DNS, SSL/TLS, headers, WAF fingerprinting, API endpoints, JavaScript analysis, cookies, and forms — and outputs structured reports you can drop straight into a pentest report.
+
+> ⚠️ **Authorized use only.** Only run WPT against targets you own or have explicit written permission to test.
 
 ---
 
+## What It Does
 
-# Web Penetration Testing Tool (WPT) v2.0
+WPT runs 8 parallel scanning modules against a target and consolidates findings with severity ratings and remediation guidance. Output can be JSON, HTML, CSV, or plain text — making it easy to pipe into a report or feed into a SIEM.
 
-## Overview
-**Web Penetration Testing Tool (WPT)** is an advanced security scanner designed to perform comprehensive security analysis of web applications. It helps security professionals, bug bounty hunters, and developers identify vulnerabilities in their web applications.
+```
+$ wpt https://example.com -f html -o report.html
 
-## Features
-- 🔍 **DNS Enumeration & Subdomain Discovery**
-- 🔐 **SSL/TLS Configuration Analysis**
-- 🛡️ **Security Headers Checker** (NEW in v2.1!)
-- 🔒 **Web Application Firewall (WAF) Detection**
-- 📡 **API Endpoint Discovery**
-- 📜 **JavaScript Security Analysis**
-- 🍪 **Cookie Security Analysis**
-- 📝 **Form Input Validation Testing**
-- 📊 **Multiple Output Formats** (Console, TXT, JSON, HTML, CSV)
-- 🏗️ **Modular Architecture** for easy extension
-- 🔧 **Configurable Scan Settings**
+[*] Starting WPT scan on https://example.com
+[*] Running 8 modules...
 
-## What's New in v2.0
+[+] DNS Enumeration         ✓  3 findings
+[+] SSL/TLS Analysis        ✓  2 findings (1 HIGH)
+[+] Security Headers        ✓  5 findings (2 HIGH, 3 MEDIUM)
+[+] WAF Detection           ✓  Cloudflare detected
+[+] API Discovery           ✓  4 endpoints found
+[+] JavaScript Analysis     ✓  1 finding (CRITICAL - hardcoded secret)
+[+] Cookie Security         ✓  2 findings
+[+] Form Analysis           ✓  1 finding (CSRF token missing)
 
-### Major Improvements
-- ✅ **Modular Architecture** - Completely refactored codebase with separate modules for each scanner
-- ✅ **Fixed Critical Bugs** - Selenium resource leaks, cookie checking issues, and timeout handling
-- ✅ **Better Error Handling** - Specific exception handling with comprehensive logging
-- ✅ **Type Hints & Documentation** - Full type annotations and detailed docstrings
-- ✅ **Severity Levels** - Findings now include severity ratings (Critical, High, Medium, Low, Info)
-- ✅ **Multiple Output Formats** - Export reports as TXT, JSON, HTML, or CSV
-- ✅ **Context Manager Support** - Proper resource cleanup
-- ✅ **Package Installation** - Install as a Python package with pip
+[*] Scan complete. 19 findings. Report saved to report.html
+```
 
-### Bug Fixes
-- Fixed Selenium WebDriver resource leaks
-- Fixed cookie security attribute checking (HttpOnly, SameSite)
-- Added proper timeout handling for all HTTP requests
-- Removed unused imports
-- Fixed bare exception handling
+---
+
+## Modules
+
+| Module | What It Checks |
+|---|---|
+| **DNS Enumeration** | A/AAAA/MX/NS/TXT/SOA records, subdomain discovery, DNS misconfigs |
+| **SSL/TLS Analysis** | Certificate validity, expiry, weak ciphers, TLS version support |
+| **Security Headers** | HSTS, CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy |
+| **WAF Detection** | Cloudflare, AWS WAF, Akamai, Imperva, F5 BIG-IP fingerprinting |
+| **API Discovery** | Common API paths, HTTP method enumeration, CORS policy checks |
+| **JavaScript Analysis** | Hardcoded credentials, eval() usage, XSS vectors, data exposure |
+| **Cookie Security** | Secure/HttpOnly/SameSite flags, session cookie analysis |
+| **Form Analysis** | CSRF token detection, autocomplete, input validation patterns |
+
+---
 
 ## Installation
 
-### Prerequisites
-Ensure you have Python 3.7+ installed. You can check by running:
-```bash
-python3 --version
-```
-
-### Clone the Repository
 ```bash
 git clone https://github.com/Dawn-Fighter/WPT.git
 cd WPT
-```
-
-### Install Dependencies
-```bash
 pip install -r requirements.txt
-```
 
-### Install as Package (Recommended)
-```bash
+# Or install as a package (run `wpt` from anywhere)
 pip install -e .
 ```
 
-This allows you to run `wpt` from anywhere:
-```bash
-wpt example.com
-```
+**Requirements:** Python 3.7+, pip
+
+---
 
 ## Usage
 
-### Quick Start
 ```bash
-# Using the wpt command (if installed as package)
+# Basic scan
 wpt example.com
 
-# Using Python module
-python3 -m wpt example.com
+# Generate HTML report
+wpt example.com -o report.html -f html
 
-# Using the script directly (backward compatible)
-python3 wpt.py example.com
+# JSON output for tool chaining
+wpt example.com -o scan.json -f json
+
+# Verbose with custom threads and timeout
+wpt https://example.com -v -t 10 --timeout 15
+
+# CSV for spreadsheet analysis
+wpt example.com -o findings.csv -f csv
 ```
 
-### Command-Line Options
-```bash
-usage: wpt [options] url
+### All Options
 
+```
 positional arguments:
   url                   Target domain or URL
 
 optional arguments:
-  -h, --help            Show this help message and exit
-  -t THREADS, --threads THREADS
-                        Number of concurrent threads (default: 5)
-  -v, --verbose         Enable verbose output
-  -o OUTPUT, --output OUTPUT
-                        Save the results to a file
-  -f FORMAT, --format FORMAT
-                        Output format: console, txt, json, html, csv (default: console)
+  -h, --help            Show help
+  -t THREADS            Concurrent threads (default: 5)
+  -v, --verbose         Verbose output
+  -o OUTPUT             Output file path
+  -f FORMAT             Output format: console | txt | json | html | csv
   --timeout TIMEOUT     Request timeout in seconds (default: 10)
 ```
 
-### Example Usage
-```bash
-# Basic scan with console output
-wpt example.com
-
-# Verbose scan
-wpt example.com -v
-
-# Save as HTML report
-wpt example.com -o report.html -f html
-
-# Save as JSON with custom threads and timeout
-wpt https://example.com -t 10 --timeout 15 -o scan.json -f json
-
-# Generate CSV report
-wpt example.com -o findings.csv -f csv
-```
-
-## File Structure
-```
-WPT/
-├── wpt/                      # Main package directory
-│   ├── __init__.py           # Package initialization
-│   ├── __main__.py           # Module entry point
-│   ├── cli.py                # Command-line interface
-│   ├── core/                 # Core functionality
-│   │   ├── scanner.py        # Main scanner orchestrator
-│   │   └── reporter.py       # Report generation
-│   ├── modules/              # Scanner modules
-│   │   ├── base_module.py    # Base class for scanners
-│   │   ├── dns_scanner.py    # DNS enumeration
-│   │   ├── ssl_scanner.py    # SSL/TLS analysis
-│   │   ├── waf_detector.py   # WAF detection
-│   │   ├── api_scanner.py    # API discovery
-│   │   ├── js_analyzer.py    # JavaScript analysis
-│   │   ├── cookie_analyzer.py # Cookie security
-│   │   └── form_analyzer.py  # Form analysis
-│   └── utils/                # Utilities
-│       ├── logger.py         # Logging configuration
-│       ├── exceptions.py     # Custom exceptions
-│       └── constants.py      # Constants and configuration
-├── tests/                    # Test directory
-├── wpt.py                    # Backward compatibility wrapper
-├── setup.py                  # Package setup (legacy)
-├── pyproject.toml            # Modern package configuration
-├── requirements.txt          # Production dependencies
-├── requirements-dev.txt      # Development dependencies
-├── README.md                 # This file
-├── LICENSE                   # MIT License
-└── .gitignore                # Git ignore rules
-```
+---
 
 ## Output Formats
 
-### Console Output
-Default format showing findings organized by category with severity levels.
+**HTML** — Styled report with color-coded severities. Good for client deliverables.
 
-### Text Report
-Plain text file suitable for documentation and archiving.
-```bash
-wpt example.com -o report.txt -f txt
-```
+**JSON** — Machine-readable. Pipe into other tools or a SIEM.
 
-### JSON Report
-Machine-readable format for integration with other tools.
-```bash
-wpt example.com -o report.json -f json
-```
+**CSV** — Flat findings list. Import into Excel or Notion for triage.
 
-### HTML Report
-Beautiful, styled HTML report with color-coded severities.
-```bash
-wpt example.com -o report.html -f html
-```
+**TXT** — Plain text. Drop into a pentest report doc.
 
-### CSV Report
-Spreadsheet-compatible format for data analysis.
-```bash
-wpt example.com -o report.csv -f csv
-```
+---
 
-## Security Checks
+## Severity Levels
 
-### DNS Enumeration
-- Checks A, AAAA, MX, NS, TXT, SOA records
-- Discovers common subdomains
-- Identifies DNS configuration issues
+Every finding is tagged with a severity:
 
-### SSL/TLS Analysis
-- Checks if HTTPS is enabled
-- Analyzes SSL certificate validity and expiration
-- Checks supported TLS versions
-- Detects weak cipher suites
+| Level | Color | Meaning |
+|---|---|---|
+| CRITICAL | 🔴 | Immediate risk — hardcoded secrets, RCE vectors |
+| HIGH | 🟠 | Significant attack surface — missing HSTS, weak TLS |
+| MEDIUM | 🟡 | Should be fixed — missing headers, CORS issues |
+| LOW | 🔵 | Best practice gaps |
+| INFO | ⚪ | Informational — WAF detected, tech stack |
 
-### Security Headers Analysis (NEW!)
-- Checks for missing security headers (HSTS, CSP, X-Frame-Options, etc.)
-- Validates header configurations
-- Identifies information disclosure headers
-- Provides specific remediation recommendations
+---
 
-### WAF Detection
-- Identifies common WAF solutions
-- Checks for Cloudflare, AWS WAF, Akamai, Imperva, F5 BIG-IP, and more
+## Extending WPT
 
-### API Discovery
-- Tests common API endpoint paths
-- Checks allowed HTTP methods
-- Identifies overly permissive CORS policies
-
-### JavaScript Analysis
-- Detects hardcoded credentials
-- Identifies unsafe DOM manipulation
-- Finds eval() usage
-- Checks for potential XSS vectors
-- Identifies data exposure via console.log
-
-### Cookie Security
-- Verifies Secure flag
-- Checks HttpOnly flag
-- Validates SameSite attribute
-- Provides security recommendations
-
-### Form Security
-- Validates form submission methods
-- Checks autocomplete settings
-- Identifies missing CSRF tokens
-- Validates input field patterns
-
-## Development
-
-### Install Development Dependencies
-```bash
-pip install -r requirements-dev.txt
-```
-
-### Running Tests
-```bash
-pytest tests/
-```
-
-### Code Formatting
-```bash
-black wpt/
-```
-
-### Type Checking
-```bash
-mypy wpt/
-```
-
-## Architecture
-
-WPT v2.0 uses a modular architecture where each security check is implemented as a separate module inheriting from `BaseModule`. This design provides:
-
-- **Extensibility**: Easy to add new scanner modules
-- **Maintainability**: Each module is self-contained and testable
-- **Reusability**: Modules can be used independently
-- **Consistency**: All modules follow the same interface
-
-### Creating a Custom Scanner Module
+Adding a new scanner module takes about 10 lines:
 
 ```python
 from wpt.modules.base_module import BaseModule, Finding, Severity
 
 class CustomScanner(BaseModule):
     def scan(self):
-        # Your scanning logic here
+        # your logic here
         self.add_finding(
             category='Custom Check',
             description='Found something interesting',
             severity=Severity.MEDIUM,
-            recommendation='Fix this issue'
+            recommendation='Here is how to fix it'
         )
         return self.findings
 ```
 
-## Security Disclaimer
+Drop it in `wpt/modules/` and register it in `core/scanner.py`. That's it.
 
-⚠️ **IMPORTANT**: This tool is designed for authorized security testing only. Always ensure you have explicit permission before scanning any website or web application. Unauthorized security testing may be illegal in your jurisdiction.
+---
 
-- Only use this tool on systems you own or have written permission to test
-- Respect rate limits and avoid causing denial of service
-- Follow responsible disclosure practices for any vulnerabilities found
-- The authors are not responsible for misuse of this tool
+## Project Structure
 
-## Contributing
+```
+WPT/
+├── wpt/
+│   ├── core/
+│   │   ├── scanner.py        # Orchestrates all modules
+│   │   └── reporter.py       # Report generation (HTML/JSON/CSV/TXT)
+│   ├── modules/
+│   │   ├── base_module.py
+│   │   ├── dns_scanner.py
+│   │   ├── ssl_scanner.py
+│   │   ├── headers_scanner.py
+│   │   ├── waf_detector.py
+│   │   ├── api_scanner.py
+│   │   ├── js_analyzer.py
+│   │   ├── cookie_analyzer.py
+│   │   └── form_analyzer.py
+│   └── utils/
+│       ├── logger.py
+│       ├── exceptions.py
+│       └── constants.py
+├── tests/
+├── requirements.txt
+└── wpt.py                    # Legacy entry point
+```
 
-We welcome contributions! Follow these steps:
-
-1. Fork the repository
-2. Create a new branch (`git checkout -b feature-name`)
-3. Make your changes
-4. Add tests for new functionality
-5. Ensure all tests pass (`pytest`)
-6. Format your code (`black .`)
-7. Commit your changes (`git commit -m 'Add new feature'`)
-8. Push to the branch (`git push origin feature-name`)
-9. Open a Pull Request
+---
 
 ## Roadmap
 
-Future enhancements planned:
-- [ ] XSS vulnerability scanner
-- [ ] SQL injection detection
-- [ ] CORS policy analysis
-- [ ] robots.txt and sitemap.xml analysis
-- [ ] Directory bruteforcing capability
-- [ ] Technology fingerprinting
-- [ ] Integration with CI/CD pipelines
-- [ ] Plugin system for custom modules
-- [ ] Web interface
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for details.
-
-## Changelog
-
-### v2.1.0 (Current)
-- Added Security Headers Scanner module
-- Enhanced subdomain enumeration
-- Improved error handling and logging
-- Updated to 8 scanner modules total
-- Better severity classification
-
-### v2.0.0
-- Complete rewrite with modular architecture
-- Fixed critical bugs (Selenium leaks, cookie checking, timeouts)
-- Added severity levels to findings
-- Multiple output formats (TXT, JSON, HTML, CSV)
-- Comprehensive error handling and logging
-- Full type hints and documentation
-- Package installation support
-- Context manager support
-
-### v1.0.0
-- Initial release
-- Basic security scanning capabilities
-
-## Contact
-
-For issues, suggestions, or questions:
-- Open an issue: https://github.com/Dawn-Fighter/WPT/issues
-- GitHub: https://github.com/Dawn-Fighter
-
-## Acknowledgments
-
-Built with:
-- [Requests](https://requests.readthedocs.io/) - HTTP library
-- [Beautiful Soup](https://www.crummy.com/software/BeautifulSoup/) - HTML parsing
-- [dnspython](https://www.dnspython.org/) - DNS toolkit
-- [Selenium](https://www.selenium.dev/) - Browser automation
-- [tqdm](https://tqdm.github.io/) - Progress bars
-
-<div align="center">
-
-[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com)
-
-**Happy Bug Hunting! 🐛🔍**
-
-</div>
+- [ ] XSS scanner module
+- [ ] SQLi detection
+- [ ] Directory bruteforcer
+- [ ] Technology fingerprinting (Wappalyzer-style)
+- [ ] CVSS score per finding
+- [ ] CI/CD pipeline integration
+- [ ] Plugin system
 
 ---
+
+## Disclaimer
+
+WPT is built for authorized security testing, research, and education. Do not use it against systems without explicit written permission. The author takes no responsibility for misuse.
+
+---
+
+## Author
+
+**Chethas Dileep** — Penetration Tester & Security Developer
+
+[![GitHub](https://img.shields.io/badge/GitHub-Dawn--Fighter-181717?style=flat-square&logo=github)](https://github.com/Dawn-Fighter)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-chethas--dileep-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/chethas-dileep-530722211)
+[![Portfolio](https://img.shields.io/badge/Portfolio-edneam.site-FF4500?style=flat-square&logo=firefox)](http://www.edneam.site)
